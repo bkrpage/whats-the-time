@@ -9,10 +9,10 @@ public class TimeService {
 
 
     public ZonedDateTime getDateInWeeks(Integer weeks) {
-        return getDateInWeeksFrom(weeks, null);
+        return getDateInWeeks(weeks, null);
     }
 
-    public ZonedDateTime getDateInWeeksFrom(Integer weeks, ZonedDateTime time) {
+    public ZonedDateTime getDateInWeeks(Integer weeks, ZonedDateTime time) {
         if (time == null)
             time = ZonedDateTime.now();
         return time.plusWeeks(weeks);

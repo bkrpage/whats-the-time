@@ -27,6 +27,14 @@ public class HomeController {
             @PathVariable Integer weeks
     ){
         switch(temporalType){
+            case TIME:
+                return "";
+            case DAY:
+                return "";
+            case WEEK:
+                return "";
+            case MONTH:
+                return "";
             case DATE:
             default:
                 return timeService.getDateInWeeks(weeks).toString();
