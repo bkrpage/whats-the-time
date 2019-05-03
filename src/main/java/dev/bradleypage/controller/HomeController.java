@@ -1,5 +1,6 @@
 package dev.bradleypage.controller;
 
+import dev.bradleypage.model.TemporalType;
 import dev.bradleypage.service.TimeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
@@ -20,10 +21,15 @@ public class HomeController {
         return "Home.";
     }
 
-    @GetMapping("date/in/{weeks}/weeks")
+    @GetMapping("/{temporalType}/in/{weeks}/weeks")
     public String timeInWeeks(
+            @PathVariable TemporalType temporalType,
             @PathVariable Integer weeks
     ){
-        return timeService.getDateInWeeks(weeks).toString();
+        switch(temporalType){
+            case DATE:
+            default:
+                return timeService.getDateInWeeks(weeks).toString();
+        }
     }
 }
