@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TemporalType {
+public enum TemporalType extends EnumType{
 
     DATE("date"),
     TIME("time"),
