@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.WeekFields;
 
 import static dev.bradleypage.util.DateTimeFormatUtil.TIME_WITH_ZONE;
 
@@ -20,6 +21,8 @@ import static dev.bradleypage.util.DateTimeFormatUtil.TIME_WITH_ZONE;
 public class HomeController {
 
     private final TimeService timeService;
+
+    private static final String GENERIC_ERROR = "There was an error processing this request.";
 
     @RequestMapping("/")
     public String home(){
@@ -39,17 +42,20 @@ public class HomeController {
 
         ZonedDateTime transformedDateTime = getTransformedDateTime(value, unit);
 
+        if (transformedDateTime == null)
+            return GENERIC_ERROR;
+
         switch(type){
             case TIME:
                 return transformedDateTime.format(TIME_WITH_ZONE);
             case DAY:
                 return transformedDateTime.getDayOfWeek().toString();
             case WEEK:
-                return "Not Implemented";
+                return Integer.toString(transformedDateTime.get(WeekFields.ISO.weekOfWeekBasedYear()));
             case MONTH:
-                return "Not Implemented";
+                return transformedDateTime.getMonth().toString();
             case DATE:
-                return "Not Implemented";
+                return transformedDateTime.toString();
             default:
                 return "Not Implemented";
 
