@@ -40,7 +40,7 @@ public class HomeController {
 
     private String processOutputType(OutputType type, Integer value, UnitType unit){
 
-        ZonedDateTime transformedDateTime = getTransformedDateTime(value, unit);
+        ZonedDateTime transformedDateTime = transformDateTime(value, unit);
 
         if (transformedDateTime == null)
             return GENERIC_ERROR;
@@ -62,7 +62,7 @@ public class HomeController {
         }
     }
 
-    private ZonedDateTime getTransformedDateTime(Integer value, UnitType unit){
+    private ZonedDateTime transformDateTime(Integer value, UnitType unit){
 
         switch (unit){
             case SECONDS:
@@ -76,7 +76,7 @@ public class HomeController {
             case WEEKS:
                 return timeService.getDateTimeInWeeks(value);
             case MONTHS:
-                return null;
+                return timeService.getDateTimeInMonths(value);
             case YEARS:
                 return null;
         }

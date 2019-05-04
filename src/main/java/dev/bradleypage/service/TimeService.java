@@ -9,6 +9,15 @@ import java.time.ZonedDateTime;
 public class TimeService {
 
 
+
+    public ZonedDateTime getDateTimeInMonths(@NonNull Integer months){
+        return getDateTimeInMonths(months, null);
+    }
+
+    public ZonedDateTime getDateTimeInMonths(@NonNull Integer months, ZonedDateTime time)  {
+        return nowIfNull(time).plusMonths(months);
+    }
+
     public ZonedDateTime getDateTimeInWeeks(@NonNull Integer weeks) {
         return getDateTimeInWeeks(weeks, null);
     }
@@ -43,6 +52,11 @@ public class TimeService {
     }
 
 
+    /**
+     * Returns the ZonedDateTime now if given ZonedDateTime is null
+     * @param time to evaluate if null
+     * @return ZonedDateTime
+     */
     private static ZonedDateTime nowIfNull(ZonedDateTime time){
         if (time == null)
              return ZonedDateTime.now();
