@@ -66,19 +66,19 @@ public class HomeController {
 
         switch (unit){
             case SECONDS:
-                break;
+                return null;
             case MINUTES:
-                break;
+                return timeService.getDateTimeInMinutes(value);
             case HOURS:
-                break;
+                return timeService.getDateTimeInHours(value);
             case DAYS:
                 return timeService.getDateTimeInDays(value);
             case WEEKS:
                 return timeService.getDateTimeInWeeks(value);
             case MONTHS:
-                break;
+                return null;
             case YEARS:
-                break;
+                return null;
         }
         return null;
     }
