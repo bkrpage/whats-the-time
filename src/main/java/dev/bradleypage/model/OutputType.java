@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TemporalType extends EnumType{
+public enum OutputType {
 
     DATE("date"),
     TIME("time"),
@@ -16,9 +16,9 @@ public enum TemporalType extends EnumType{
     private String description;
 
 
-    public static TemporalType get(String description){
-        for(TemporalType t : TemporalType.values()){
-            if(t.getDescription().equalsIgnoreCase(description)) return t;
+    public static OutputType get(String description) {
+        for (OutputType t : OutputType.values()) {
+            if (t.getDescription().equalsIgnoreCase(description)) return t;
         }
         return null;
     }

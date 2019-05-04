@@ -1,6 +1,7 @@
 package dev.bradleypage.config;
 
-import dev.bradleypage.util.TemporalTypeConverter;
+import dev.bradleypage.util.OutputTypeConverter;
+import dev.bradleypage.util.UnitTypeConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -10,7 +11,8 @@ public class MyConfig extends WebMvcConfigurationSupport {
     @Override
     public FormattingConversionService mvcConversionService() {
         FormattingConversionService f = super.mvcConversionService();
-        f.addConverter(new TemporalTypeConverter());
+        f.addConverter(new OutputTypeConverter());
+        f.addConverter(new UnitTypeConverter());
         return f;
     }
 }
