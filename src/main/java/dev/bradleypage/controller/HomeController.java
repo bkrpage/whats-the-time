@@ -2,7 +2,7 @@ package dev.bradleypage.controller;
 
 import dev.bradleypage.model.OutputType;
 import dev.bradleypage.model.UnitType;
-import dev.bradleypage.service.TimeService;
+import dev.bradleypage.service.TimeServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +20,13 @@ import static dev.bradleypage.util.DateTimeFormatUtil.TIME_WITH_ZONE;
 @CommonsLog
 public class HomeController {
 
-    private final TimeService timeService;
+    private final TimeServiceImpl timeService;
 
     private static final String GENERIC_ERROR = "There was an error processing this request.";
+    private static final String NEGATIVE_ERROR = "The transformation value must not be negative.";
 
     @RequestMapping("/")
-    public String home(){
+    public String home() {
         return "Home.";
     }
 
@@ -34,18 +35,23 @@ public class HomeController {
             @PathVariable OutputType outputType,
             @PathVariable Integer value,
             @PathVariable UnitType unit
-    ){
+    ) {
+
+        if (value < 0) {
+            return NEGATIVE_ERROR;
+        }
+
         return processOutputType(outputType, value, unit);
     }
 
-    private String processOutputType(OutputType type, Integer value, UnitType unit){
+    private String processOutputType(OutputType type, Integer value, UnitType unit) {
 
-        ZonedDateTime transformedDateTime = transformDateTime(value, unit);
+        ZonedDateTime transformedDateTime = timeService.transformDateTime(value, unit);
 
         if (transformedDateTime == null)
             return GENERIC_ERROR;
 
-        switch(type){
+        switch (type) {
             case TIME:
                 return transformedDateTime.format(TIME_WITH_ZONE);
             case DAY:
@@ -60,26 +66,5 @@ public class HomeController {
                 return "Not Implemented";
 
         }
-    }
-
-    private ZonedDateTime transformDateTime(Integer value, UnitType unit){
-
-        switch (unit){
-            case SECONDS:
-                return null;
-            case MINUTES:
-                return timeService.getDateTimeInMinutes(value);
-            case HOURS:
-                return timeService.getDateTimeInHours(value);
-            case DAYS:
-                return timeService.getDateTimeInDays(value);
-            case WEEKS:
-                return timeService.getDateTimeInWeeks(value);
-            case MONTHS:
-                return timeService.getDateTimeInMonths(value);
-            case YEARS:
-                return null;
-        }
-        return null;
     }
 }

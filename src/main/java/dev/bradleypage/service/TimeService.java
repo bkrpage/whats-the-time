@@ -1,69 +1,42 @@
 package dev.bradleypage.service;
 
+import dev.bradleypage.model.UnitType;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 
 @Service
-public class TimeService {
+public interface TimeService {
 
+    ZonedDateTime getDateTimeInYears(@NonNull Integer years);
 
+    ZonedDateTime getDateTimeInYears(@NonNull Integer years, ZonedDateTime time);
 
-    public ZonedDateTime getDateTimeInMonths(@NonNull Integer months){
-        return getDateTimeInMonths(months, null);
-    }
+    ZonedDateTime getDateTimeInMonths(@NonNull Integer months);
 
-    public ZonedDateTime getDateTimeInMonths(@NonNull Integer months, ZonedDateTime time)  {
-        return nowIfNull(time).plusMonths(months);
-    }
+    ZonedDateTime getDateTimeInMonths(@NonNull Integer months, ZonedDateTime time);
 
-    public ZonedDateTime getDateTimeInWeeks(@NonNull Integer weeks) {
-        return getDateTimeInWeeks(weeks, null);
-    }
+    ZonedDateTime getDateTimeInWeeks(@NonNull Integer weeks);
 
-    public ZonedDateTime getDateTimeInWeeks(@NonNull Integer weeks, ZonedDateTime time) {
-        return nowIfNull(time).plusWeeks(weeks);
-    }
+    ZonedDateTime getDateTimeInWeeks(@NonNull Integer weeks, ZonedDateTime time);
 
+    ZonedDateTime getDateTimeInDays(@NonNull Integer days);
 
-    public ZonedDateTime getDateTimeInDays(@NonNull Integer days){
-        return getDateTimeInDays(days, null);
-    }
+    ZonedDateTime getDateTimeInDays(@NonNull Integer days, ZonedDateTime time);
 
-    public ZonedDateTime getDateTimeInDays(@NonNull Integer days, ZonedDateTime time)  {
-        return nowIfNull(time).plusDays(days);
-    }
+    ZonedDateTime getDateTimeInHours(@NonNull Integer hours);
 
-    public ZonedDateTime getDateTimeInHours(@NonNull Integer hours){
-        return getDateTimeInHours(hours, null);
-    }
+    ZonedDateTime getDateTimeInHours(@NonNull Integer hours, ZonedDateTime time);
 
-    public ZonedDateTime getDateTimeInHours(@NonNull Integer hours, ZonedDateTime time)  {
-        return nowIfNull(time).plusHours(hours);
-    }
+    ZonedDateTime getDateTimeInMinutes(@NonNull Integer minutes);
 
-    public ZonedDateTime getDateTimeInMinutes(@NonNull Integer minutes){
-        return getDateTimeInMinutes(minutes, null);
-    }
+    ZonedDateTime getDateTimeInMinutes(@NonNull Integer minutes, ZonedDateTime time);
 
-    public ZonedDateTime getDateTimeInMinutes(@NonNull Integer minutes, ZonedDateTime time)  {
-        return nowIfNull(time).plusMinutes(minutes);
-    }
+    ZonedDateTime getDateTimeInSeconds(@NonNull Integer seconds);
 
+    ZonedDateTime getDateTimeInSeconds(@NonNull Integer seconds, ZonedDateTime time);
 
-    /**
-     * Returns the ZonedDateTime now if given ZonedDateTime is null
-     * @param time to evaluate if null
-     * @return ZonedDateTime
-     */
-    private static ZonedDateTime nowIfNull(ZonedDateTime time){
-        if (time == null)
-             return ZonedDateTime.now();
-        else
-            return time;
-    }
-
-
+    ZonedDateTime transformDateTime(Integer value, UnitType unit);
 
 }
