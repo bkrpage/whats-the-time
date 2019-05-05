@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 
 @Service
-public class TimeServiceImpl implements TimeService {
+public class DateTimeTransformationServiceImpl implements DateTimeTransformationService {
 
     public ZonedDateTime getDateTimeInYears(@NonNull Integer years) {
         return getDateTimeInYears(years, null);
