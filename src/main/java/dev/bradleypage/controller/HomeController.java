@@ -6,11 +6,14 @@ import dev.bradleypage.service.DateTimeTransformationService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.time.ZonedDateTime;
 import java.time.temporal.WeekFields;
 
@@ -19,6 +22,7 @@ import static dev.bradleypage.util.DateTimeFormatUtil.TIME_WITH_ZONE;
 @RestController
 @AllArgsConstructor
 @CommonsLog
+@Validated
 public class HomeController {
 
     private final DateTimeTransformationService dtTransformationService;
@@ -32,17 +36,13 @@ public class HomeController {
         return "Home.";
     }
 
-    @GetMapping("/{outputType}/in/{value}/{unit}")
+    @GetMapping("/{outputType}/in/{value}/{unit}/{format}")
     public String timeInWeeks(
             @PathVariable OutputType outputType,
-            @PathVariable Integer value,
-            @PathVariable UnitType unit
+            @PathVariable @Valid @Min(0) Integer value,
+            @PathVariable UnitType unit,
+            @PathVariable String format
     ) {
-
-        if (value < 0) {
-            return NEGATIVE_ERROR;
-        }
-
         return processOutputType(outputType, value, unit);
     }
 
@@ -50,8 +50,7 @@ public class HomeController {
 
         ZonedDateTime transformedDateTime = dtTransformationService.transformDateTime(value, unit);
 
-        if (transformedDateTime == null)
-            return GENERIC_ERROR;
+        if (transformedDateTime == null) return GENERIC_ERROR;
 
         switch (type) {
             case TIME:
