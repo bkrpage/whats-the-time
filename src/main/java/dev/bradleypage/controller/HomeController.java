@@ -6,11 +6,9 @@ import dev.bradleypage.service.DateTimeTransformationService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.WeekFields;
 
@@ -33,22 +31,38 @@ public class HomeController {
     }
 
     @GetMapping("/{outputType}/in/{value}/{unit}")
-    public String timeInWeeks(
+    public String getOutputInUnit(
             @PathVariable OutputType outputType,
             @PathVariable Integer value,
-            @PathVariable UnitType unit
+            @PathVariable UnitType unit,
+            @RequestParam(required = false, defaultValue = "Z") String zoneId
+            ) {
+
+        if (value < 0) {
+            return NEGATIVE_ERROR;
+        }
+
+        return processOutputType(outputType, value, unit, ZoneId.of(zoneId));
+    }
+
+    @GetMapping("/{outputType}/{value}/{unit}/ago")
+    public String getPast(
+            @PathVariable OutputType outputType,
+            @PathVariable Integer value,
+            @PathVariable UnitType unit,
+            @RequestParam(required = false, defaultValue = "Z") String zoneId
     ) {
 
         if (value < 0) {
             return NEGATIVE_ERROR;
         }
 
-        return processOutputType(outputType, value, unit);
+        return processOutputType(outputType, value * -1, unit, ZoneId.of(zoneId));
     }
 
-    private String processOutputType(OutputType type, Integer value, UnitType unit) {
+    private String processOutputType(OutputType type, Integer value, UnitType unit, ZoneId zoneId) {
 
-        ZonedDateTime transformedDateTime = dtTransformationService.transformDateTime(value, unit);
+        ZonedDateTime transformedDateTime = dtTransformationService.transformDateTime(value, unit).withZoneSameInstant(zoneId);
 
         if (transformedDateTime == null)
             return GENERIC_ERROR;
